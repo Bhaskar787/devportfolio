@@ -22,25 +22,49 @@ export async function registerRoutes(
           field: err.errors[0].path.join('.'),
         });
       }
+      const error = err as any;
+      if (error.name === 'AggregateError' || error.code === 'ECONNREFUSED' || 
+          (error.errors && error.errors.some((e: any) => e.code === 'ECONNREFUSED'))) {
+        return res.status(503).json({ 
+          message: "Database connection failed. Please ensure PostgreSQL is running.",
+          error: "ECONNREFUSED"
+        });
+      }
       throw err;
     }
   });
 
   // Get Projects
   app.get(api.projects.list.path, async (req, res) => {
-    const projects = await storage.getProjects();
-    res.json(projects);
+    try {
+      const projects = await storage.getProjects();
+      res.json(projects);
+    } catch (err: any) {
+      // Handle AggregateError from pg-pool
+      if (err.name === 'AggregateError' || err.code === 'ECONNREFUSED' || 
+          (err.errors && err.errors.some((e: any) => e.code === 'ECONNREFUSED'))) {
+        return res.status(503).json({ 
+          message: "Database connection failed. Please ensure PostgreSQL is running.",
+          error: "ECONNREFUSED"
+        });
+      }
+      throw err;
+    }
   });
 
-  // Seed Data (if empty)
-  await seedDatabase();
+  // Seed Data (if empty) - non-blocking
+  seedDatabase().catch((err) => {
+    console.error("Failed to seed database:", err.message);
+    console.error("Make sure PostgreSQL is running and DATABASE_URL is correct in .env");
+  });
 
   return httpServer;
 }
 
 async function seedDatabase() {
-  const existingProjects = await storage.getProjects();
-  if (existingProjects.length === 0) {
+  try {
+    const existingProjects = await storage.getProjects();
+    if (existingProjects.length === 0) {
     const seedProjects = [
       {
         title: "E-Commerce Platform",
@@ -76,9 +100,17 @@ async function seedDatabase() {
       }
     ];
 
-    for (const project of seedProjects) {
-      await storage.createProject(project);
+      for (const project of seedProjects) {
+        await storage.createProject(project);
+      }
+      console.log("Seeded database with initial projects");
     }
-    console.log("Seeded database with initial projects");
+  } catch (err: any) {
+    // Handle AggregateError from pg-pool
+    if (err.name === 'AggregateError' || err.code === 'ECONNREFUSED' || 
+        (err.errors && err.errors.some((e: any) => e.code === 'ECONNREFUSED'))) {
+      throw new Error("Cannot connect to PostgreSQL. Please ensure PostgreSQL is running and DATABASE_URL in .env is correct.");
+    }
+    throw err;
   }
 }

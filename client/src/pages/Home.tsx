@@ -28,7 +28,7 @@ export default function Home() {
               </div>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
                 Hi, I'm <br />
-                <span className="text-gradient">Alex Dev</span>
+                <span className="text-gradient">Bhaskar Budha</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-lg leading-relaxed">
                 A Full-Stack Developer specializing in building exceptional digital experiences. 
@@ -61,7 +61,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="flex items-center gap-6 text-muted-foreground"
             >
-              <a href="#" className="hover:text-primary transition-colors hover:-translate-y-1 duration-200">
+              <a href="https://github.com/Bhaskar787" className="hover:text-primary transition-colors hover:-translate-y-1 duration-200">
                 <Github className="h-6 w-6" />
               </a>
               <a href="#" className="hover:text-primary transition-colors hover:-translate-y-1 duration-200">
@@ -71,12 +71,7 @@ export default function Home() {
                 <Twitter className="h-6 w-6" />
               </a>
               <div className="h-8 w-[1px] bg-white/10 mx-2" />
-              <div className="flex -space-x-3">
-                {/* Random User Avatars for social proof */}
-                <div className="w-10 h-10 rounded-full border-2 border-background bg-gray-700 flex items-center justify-center text-xs">A</div>
-                <div className="w-10 h-10 rounded-full border-2 border-background bg-gray-600 flex items-center justify-center text-xs">B</div>
-                <div className="w-10 h-10 rounded-full border-2 border-background bg-gray-500 flex items-center justify-center text-xs">C</div>
-              </div>
+             
               <span className="text-sm">Trusted by clients</span>
             </motion.div>
           </div>

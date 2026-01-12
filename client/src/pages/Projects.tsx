@@ -1,68 +1,131 @@
-import { useProjects } from "@/hooks/use-projects";
-import { ProjectCard, ProjectCardSkeleton } from "@/components/ProjectCard";
-import { motion } from "framer-motion";
-import { AlertCircle } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExternalLink, Github } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useProjects } from "@/hooks/use-projects";
+import { defaultProjects } from "@/data/projects";
+import type { Project } from "@shared/schema";
+import { motion } from "framer-motion";
 
-export default function Projects() {
-  const { data: projects, isLoading, error, refetch } = useProjects();
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+}
+
+export function ProjectCard({ project, index }: ProjectCardProps) {
+  const isDev = typeof import.meta !== "undefined" && (import.meta as any).env && (import.meta as any).env.DEV;
 
   return (
-    <div className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center max-w-3xl mx-auto mb-16">
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-5xl font-bold mb-6"
-        >
-          My Projects
-        </motion.h1>
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-xl text-muted-foreground"
-        >
-          A selection of my recent work, featuring web applications, APIs, and design experiments.
-        </motion.p>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      className={`group relative flex flex-col overflow-hidden rounded-2xl bg-card border border-white/5 shadow-lg hover:shadow-primary/10 transition-all duration-300 hover:border-primary/50 ${
+        isDev ? "outline outline-4 outline-lime-400" : ""
+      }`}
+    >
+      <div className="aspect-video w-full overflow-hidden bg-muted">
+        {/* Placeholder for project image if none provided */}
+        <div className="h-full w-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-muted-foreground">
+          {project.imageUrl ? (
+            <img
+              src={project.imageUrl}
+              alt={project.title}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+          ) : (
+            <span className="text-4xl font-display opacity-20">{project.title[0]}</span>
+          )}
+        </div>
+
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+          {project.githubLink && (
+            <Button size="icon" variant="secondary" className="rounded-full h-12 w-12 hover:bg-white hover:text-black" asChild>
+              <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
+                <Github className="h-5 w-5" />
+              </a>
+            </Button>
+          )}
+
+          {project.liveLink && (
+            <Button size="icon" variant="secondary" className="rounded-full h-12 w-12 hover:bg-primary hover:text-white" asChild>
+              <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="h-5 w-5" />
+              </a>
+            </Button>
+          )}
+        </div>
       </div>
 
-      {error ? (
-        <div className="max-w-md mx-auto">
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>
-              Failed to load projects. Please try again later.
-            </AlertDescription>
-          </Alert>
-          <div className="mt-4 flex justify-center">
-            <Button onClick={() => refetch()} variant="outline">Try Again</Button>
-          </div>
-        </div>
-      ) : isLoading ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <ProjectCardSkeleton key={i} />
+      <div className="flex flex-col flex-1 p-6">
+        <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
+        <p className="text-muted-foreground text-sm line-clamp-3 mb-4 flex-1">{project.description}</p>
+
+        <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/5">
+          {project.techStack.map((tech) => (
+            <Badge key={tech} variant="secondary" className="bg-secondary/50 text-xs font-mono">
+              {tech}
+            </Badge>
           ))}
         </div>
-      ) : projects?.length === 0 ? (
-        <div className="text-center py-20 text-muted-foreground border border-dashed border-white/10 rounded-2xl bg-card/30">
-          <p className="text-lg">No projects found.</p>
-          <p className="text-sm">Check back soon for updates!</p>
+      </div>
+    </motion.div>
+  );
+}
+
+export function ProjectCardSkeleton() {
+  return (
+    <div className="rounded-2xl bg-card border border-white/5 overflow-hidden h-[400px] animate-pulse">
+      <div className="h-48 bg-muted/50" />
+      <div className="p-6 space-y-4">
+        <div className="h-6 w-2/3 bg-muted/50 rounded" />
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-muted/50 rounded" />
+          <div className="h-4 w-5/6 bg-muted/50 rounded" />
         </div>
-      ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects?.map((project, index) => (
-            <ProjectCard 
-              key={project.id} 
-              project={project} 
-              index={index} 
-            />
-          ))}
+        <div className="pt-4 flex gap-2">
+          <div className="h-6 w-16 bg-muted/50 rounded-full" />
+          <div className="h-6 w-16 bg-muted/50 rounded-full" />
         </div>
-      )}
+      </div>
+    </div>
+  );
+}
+
+export default function Projects() {
+  const { data: projects = defaultProjects, isLoading } = useProjects();
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-16 space-y-12">
+      <div className="space-y-4 text-center">
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-primary font-medium"
+        >
+          Recent Work
+        </motion.p>
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-4xl md:text-5xl font-bold"
+        >
+          Projects I’m proud of
+        </motion.h1>
+        <p className="text-muted-foreground max-w-2xl mx-auto">
+          Showcasing a mix of client work, product experiments, and engineering explorations.
+          These load instantly using bundled sample data when the API isn’t available.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8">
+        {isLoading
+          ? Array.from({ length: 4 }).map((_, idx) => <ProjectCardSkeleton key={idx} />)
+          : projects.map((project, index) => (
+              <ProjectCard key={project.id ?? project.title} project={project} index={index} />
+            ))}
+      </div>
     </div>
   );
 }

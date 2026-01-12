@@ -1,0 +1,55 @@
+import type { Project } from "@shared/schema";
+
+// Local fallback projects used when the API/database is unavailable.
+export const defaultProjects: Project[] = [
+  {
+    id: 1,
+    title: "Portfolio Website",
+    description: "A responsive portfolio with JavaScript.",
+    techStack: ["JavaScript", "Web"],
+    imageUrl: "https://mir-s3-cdn-cf.behance.net/projects/808/a2f882224632473.Y3JvcCwxMzgwLDEwODAsMjcwLDA.jpg",
+    githubLink: "https://github.com/Bhaskar787/portfolio",
+    liveLink: "",
+    createdAt: new Date(),
+  },
+  {
+    id: 2,
+    title: "AI-Solution",
+    description: "AI powered tools to enhance digital employee experiences across industries.",
+    techStack: ["PHP", "Tailwind", "Bootstrap"],
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy_PSBTwlb2GGiwc4L-fl32XnufRgMnyNRrw&s",
+    githubLink: "https://github.com/Bhaskar787/Ai-Solution",
+    liveLink: "",
+    createdAt: new Date(),
+  },
+  {
+    id: 3,
+    title: "Peakma-Gym",
+    description: "Gym management system built in PHP.",
+    techStack: ["PHP"],
+    imageUrl: "https://www.primalstrength.com/cdn/shop/files/gymdesign_render_Two_collumn_grid_cb1b5850-fa8e-4a7b-a2b3-190c2e45facd.jpg?v=1680719688&width=1500",
+    githubLink: "https://github.com/Bhaskar787/Peakma-Gym",
+    liveLink: "",
+    createdAt: new Date(),
+  },
+  {
+    id: 4,
+    title: "Mealmate App",
+    description: "Restaurant menu management application using Java.",
+    techStack: ["Java"],
+    imageUrl: "https://img.freepik.com/premium-photo/food-delivery-app-ui-design-by-generative-ai_764067-3164.jpg",
+    githubLink: "https://github.com/Bhaskar787/Mealmate",
+    liveLink: "",
+    createdAt: new Date(),
+  },
+  {
+    id: 5,
+    title: "Thinkboard",
+    description: "Add, edit, update, and delete notes.",
+    techStack: ["React", "Web"],
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfVbxrq8A9Egvoevl67qK1e0-Cnu3pCYHHabHOKjR1&s",
+    githubLink: "https://github.com/Bhaskar787/Thinkboard",
+    liveLink: "",
+    createdAt: new Date(),
+  },
+];

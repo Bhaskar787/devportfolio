@@ -66,8 +66,8 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-1">Email</h3>
-                <p className="text-muted-foreground">hello@alexdev.com</p>
-                <p className="text-muted-foreground">support@alexdev.com</p>
+                <p className="text-muted-foreground">budhabhaskar11@gmail.com</p>
+                
               </div>
             </div>
 
@@ -77,7 +77,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-1">Phone</h3>
-                <p className="text-muted-foreground">+1 (555) 000-0000</p>
+                <p className="text-muted-foreground">+977 9825630086</p>
                 <p className="text-sm text-muted-foreground mt-1">Mon-Fri from 8am to 5pm</p>
               </div>
             </div>
@@ -88,7 +88,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-1">Location</h3>
-                <p className="text-muted-foreground">San Francisco, CA</p>
+                <p className="text-muted-foreground">Shantinagar, Kathmandu</p>
                 <p className="text-muted-foreground">Remote Available</p>
               </div>
             </div>
